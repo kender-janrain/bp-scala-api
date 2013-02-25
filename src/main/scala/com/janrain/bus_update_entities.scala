@@ -17,7 +17,7 @@ object BusUpdateJsonProtocol extends DefaultJsonProtocol {
     }.toList
   }
 
-  implicit def UserUpdateRequest = Marshaller.of[BusUpdateRequest](ContentType.`application/json`) { (value, contentType, ctx) =>
+  implicit def BusUpdateRequestMarshaller = Marshaller.of[BusUpdateRequest](ContentType.`application/json`) { (value, contentType, ctx) =>
     val jsonAst = JsObject(
       "admin" -> JsString(value.admin),
       "secret" -> JsString(value.secret),

@@ -51,7 +51,10 @@ object BackplaneProvisioning {
 
   def busList(entities: Set[String]) = {
     import BusListJsonProtocol._
-    val pipeline = (sendReceive(conduit))
+    val pipeline = (
+      sendReceive(conduit) ~>
+      unmarshal[Map[String, BusListResponse]]
+      )
 
     pipeline(Post("/v1/provision/bus/list", BusListRequest(
       admin, secret, entities
