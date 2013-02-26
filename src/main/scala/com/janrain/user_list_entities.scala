@@ -6,6 +6,6 @@ case class UserListRequest(admin: String, secret: String, entities: Set[String] 
 case class UserListResponseUser(USER: String, PWDHASH: String)
 
 object UserListJsonProtocol extends DefaultJsonProtocol {
-  implicit val UserListRequestFormat = jsonFormat3(UserListRequest)
-  implicit val UserListResponseUserFormat = jsonFormat2(UserListResponseUser)
+	implicit val UserListRequestFormat = jsonFormat3(UserListRequest)
+	implicit val UserListResponseUserFormat = jsonFormat2(UserListResponseUser)
 }
