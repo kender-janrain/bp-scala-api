@@ -9,8 +9,8 @@ object BP {
   val timeout = 5 seconds
 
   object user {
-    def list = {
-      Await.result(userList, timeout)
+    def list(entities: String*) = {
+      Await.result(userList(entities.toSet), timeout)
     }
 
     def update(user: String, pass: String) = {
@@ -36,6 +36,16 @@ object BP {
 
     def delete(busses: String*) = {
       Await.result(busDelete(busses.toSet), timeout)
+    }
+  }
+
+  object admin {
+    def add(username: String, password: String) = {
+      Await.result(adminAdd(username, password), timeout)
+    }
+
+    def update(debugMode: Boolean, defaultMessagesMax: Int) = {
+      Await.result(adminUpdate(debugMode, defaultMessagesMax), timeout)
     }
   }
 

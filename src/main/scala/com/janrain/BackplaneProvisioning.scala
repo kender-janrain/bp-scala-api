@@ -7,12 +7,15 @@ import spray.client.HttpConduit
 import spray.httpx.SprayJsonSupport._
 import HttpConduit._
 import concurrent.ExecutionContext.Implicits.global
+import spray.http.HttpResponse
 
 object BackplaneProvisioning {
   val admin = "bpadmin"
   val secret = "bpadmin"
   val host = "localhost"
   val port = 9000
+
+  val debug = false
 
   import com.janrain._
 
@@ -24,10 +27,15 @@ object BackplaneProvisioning {
     name = "http-conduit"
   )
 
-  def userList = {
+  private def debugResponse(response: HttpResponse): HttpResponse = {
+    if (debug) println(response.toString)
+    response
+  }
+
+  def userList(entities: Set[String]) = {
     import UserListJsonProtocol._
-    val pipeline = (sendReceive(conduit) ~> unmarshal[Map[String, UserListResponseUser]])
-    pipeline(Post("/v1/provision/user/list", UserListRequest(admin, secret)))
+    val pipeline = (sendReceive(conduit) ~> debugResponse ~> unmarshal[Map[String, UserListResponseUser]])
+    pipeline(Post("/v1/provision/user/list", UserListRequest(admin, secret, entities)))
   }
 
   def userUpdate(users: (String, String)*) = {
@@ -77,5 +85,22 @@ object BackplaneProvisioning {
     pipeline(Post("/v1/provision/bus/delete", BusDeleteRequest(
       admin, secret, entities
     )))
+  }
+
+  def adminAdd(username: String, password: String) = {
+    import spray.http.FormData
+    val pipeline = (sendReceive(conduit))
+
+    pipeline(Post("/adminadd", FormData(Map("username" -> username, "password" -> password))))
+  }
+
+  def adminUpdate(debugMode: Boolean, defaultMessagesMax: Int) = {
+    import spray.http.FormData
+    val pipeline = (sendReceive(conduit))
+
+    pipeline(Post("/adminupdate", FormData(Map(
+      "debug_mode" -> debugMode.toString,
+      "default_messages_max" -> defaultMessagesMax.toString
+    ))))
   }
 }
