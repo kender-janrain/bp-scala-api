@@ -1,4 +1,4 @@
-import com.janrain.bp.v2.model.ClientUpdateRequestConfigV2
+import com.janrain.bp.v2.model.{BusUpdateRequestConfigV2, ClientUpdateRequestConfigV2}
 import concurrent.Await
 import scala.concurrent.duration._
 
@@ -32,6 +32,23 @@ object BP2 {
 
 		def delete(entities: String*) = {
 			Await.result(clientDelete(entities.toSet), timeout)
+		}
+	}
+
+	object bus {
+		def config(busName: String, owner: String, retentionTimeSeconds: Int = 60, retentionStickyTimeSeconds: Int = 28800) = {
+			busConfig(busName, owner, retentionTimeSeconds, retentionStickyTimeSeconds)
+		}
+		def update(configs: BusUpdateRequestConfigV2*) = {
+			Await.result(busUpdate(configs.toSet), timeout)
+		}
+
+		def list(entities: String*) = {
+			Await.result(busList(entities.toSet), timeout)
+		}
+
+		def delete(entities: String*) = {
+			Await.result(busDelete(entities.toSet), timeout)
 		}
 	}
 }

@@ -55,4 +55,29 @@ object Backplane2Provisioning {
 			Post("/v2/provision/client/delete", ClientDeleteRequestV2(admin, secret, entities))
 		)
 	}
+
+	def busConfig(busName: String, owner: String, retentionTimeSeconds: Int = 60, retentionStickyTimeSeconds: Int = 28800) = {
+		BusUpdateRequestConfigV2(busName, owner, retentionTimeSeconds.toString, retentionStickyTimeSeconds.toString)
+	}
+
+	def busUpdate(configs: Set[BusUpdateRequestConfigV2]) = {
+		import BusUpdateJsonProtocolV2._
+		(sendReceive(conduit) ~> unmarshal[Map[String, String]]).apply(
+			Post("/v2/provision/bus/update", BusUpdateRequestV2(admin, secret, configs))
+		)
+	}
+
+	def busList(entities: Set[String]) = {
+		import BusListJsonProtocolV2._
+		(sendReceive(conduit) ~> unmarshal[Map[String, BusListResponseConfigV2]]).apply(
+			Post("/v2/provision/bus/list", BusListRequestV2(admin, secret, entities))
+		)
+	}
+
+	def busDelete(entities: Set[String]) = {
+		import BusDeleteJsonProtocolV2._
+		(sendReceive(conduit) ~> unmarshal[Map[String, String]]).apply(
+			Post("/v2/provision/bus/delete", BusDeleteRequestV2(admin, secret, entities))
+		)
+	}
 }

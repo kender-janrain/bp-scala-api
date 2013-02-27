@@ -11,11 +11,6 @@ import spray.http.HttpResponse
 object Backplane1Provisioning {
 	import com.janrain.bp.BackplaneSpraySupport._
 
-	private def debugResponse(response: HttpResponse): HttpResponse = {
-		if (debug) println(response.toString)
-		response
-	}
-
 	def userList(entities: Set[String]) = {
 		import UserListJsonProtocolV1._
 		val pipeline = (sendReceive(conduit) ~> unmarshal[Map[String, UserListResponseUserV1]])

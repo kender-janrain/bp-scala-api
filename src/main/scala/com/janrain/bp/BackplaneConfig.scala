@@ -6,5 +6,5 @@ trait BackplaneConfig {
 	val host = "localhost"
 	val port = 9000
 
-	val debug = false
+	val debug = true
 }
