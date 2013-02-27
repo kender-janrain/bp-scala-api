@@ -6,6 +6,6 @@ case class UserUpdateRequestV2(admin: String, secret: String, configs: List[User
 case class UserUpdateRequestConfigV2(USER: String, PWDHASH: String)
 
 object UserUpdateJsonProtocolV2 extends DefaultJsonProtocol {
-	implicit val UserUpdateRequestFormat = jsonFormat2(UserUpdateRequestConfigV2)
-	implicit val UserUpdateRequestConfigFormat = jsonFormat3(UserUpdateRequestV2)
+	implicit val UserUpdateRequestV2Format = jsonFormat2(UserUpdateRequestConfigV2)
+	implicit val UserUpdateRequestConfigV2Format = jsonFormat3(UserUpdateRequestV2)
 }

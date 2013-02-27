@@ -7,7 +7,7 @@ object BP1 {
 	import Backplane1Provisioning._
 	import concurrent.ExecutionContext.Implicits.global
 
-	val timeout = 5 seconds
+	val timeout = 5.seconds
 
 	object user {
 		def list(entities: String*) = {
