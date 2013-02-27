@@ -1,23 +1,23 @@
-package com.janrain.bp.v1
+package com.janrain.bp.v1.model
 
 import spray.json._
 import spray.httpx.marshalling.Marshaller
 import spray.http.{HttpBody, ContentType}
 
-case class BusUpdateRequest(admin: String, secret: String, configs: Iterable[BusUpdateConfig])
-case class BusUpdateConfig(busName: String, permissions: Map[String, Set[String]], retentionTimeSeconds: Int = 300,  retentionStickyTimeSeconds: Int = 28800)
+case class BusUpdateRequestV1(admin: String, secret: String, configs: Iterable[BusUpdateConfigV1])
+case class BusUpdateConfigV1(busName: String, permissions: Map[String, Set[String]], retentionTimeSeconds: Int = 300,  retentionStickyTimeSeconds: Int = 28800)
 
-case class BusUpdateResponse()
+case class BusUpdateResponseV1()
 
-object BusUpdateJsonProtocol extends DefaultJsonProtocol {
-	def permissions(config: BusUpdateConfig): List[JsField] = {
+object BusUpdateJsonProtocolV1 extends DefaultJsonProtocol {
+	def permissions(config: BusUpdateConfigV1): List[JsField] = {
 		config.permissions.map { permission =>
 			val (username, ps) = permission
 			(username, JsString(ps.mkString(",")))
 		}.toList
 	}
 
-	implicit def BusUpdateRequestMarshaller = Marshaller.of[BusUpdateRequest](ContentType.`application/json`) { (value, contentType, ctx) =>
+	implicit def BusUpdateRequestMarshallerV1 = Marshaller.of[BusUpdateRequestV1](ContentType.`application/json`) { (value, contentType, ctx) =>
 		val jsonAst = JsObject(
 			"admin" -> JsString(value.admin),
 			"secret" -> JsString(value.secret),

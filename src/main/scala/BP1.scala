@@ -1,9 +1,10 @@
-import com.janrain.bp.v1.{BusUpdateConfig, BackplaneProvisioning}
+import com.janrain.bp.v1.model.BusUpdateConfigV1
+import com.janrain.bp.v1.{Backplane1Provisioning}
 import concurrent.Await
 import scala.concurrent.duration._
 
 object BP1 {
-	import BackplaneProvisioning._
+	import Backplane1Provisioning._
 	import concurrent.ExecutionContext.Implicits.global
 
 	val timeout = 5 seconds
@@ -27,12 +28,12 @@ object BP1 {
 			Await.result(busList(entities.toSet), timeout)
 		}
 
-		def update(configs: BusUpdateConfig*) = {
+		def update(configs: BusUpdateConfigV1*) = {
 			Await.result(busUpdate(configs:_*), timeout)
 		}
 
 		def config(busName: String, permissions: Map[String, Set[String]], retentionTimeSeconds: Int = 300,  retentionStickyTimeSeconds: Int = 28800) =
-			BusUpdateConfig(busName, permissions, retentionTimeSeconds, retentionStickyTimeSeconds)
+			BusUpdateConfigV1(busName, permissions, retentionTimeSeconds, retentionStickyTimeSeconds)
 
 		def delete(busses: String*) = {
 			Await.result(busDelete(busses.toSet), timeout)
@@ -47,10 +48,5 @@ object BP1 {
 		def update(debugMode: Boolean, defaultMessagesMax: Int) = {
 			Await.result(adminUpdate(debugMode, defaultMessagesMax), timeout)
 		}
-	}
-
-	def bpp_exit = {
-		BackplaneProvisioning.system.shutdown()
-		System.exit(0)
 	}
 }
