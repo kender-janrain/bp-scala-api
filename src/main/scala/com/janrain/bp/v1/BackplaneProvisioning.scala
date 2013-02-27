@@ -1,4 +1,4 @@
-package com.janrain
+package com.janrain.bp.v1
 
 import akka.actor._
 import spray.io.IOExtension

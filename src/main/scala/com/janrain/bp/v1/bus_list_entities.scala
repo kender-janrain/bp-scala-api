@@ -1,4 +1,4 @@
-package com.janrain
+package com.janrain.bp.v1
 
 import spray.json.DefaultJsonProtocol
 import spray.httpx.unmarshalling.Unmarshaller

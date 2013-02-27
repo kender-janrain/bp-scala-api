@@ -1,8 +1,8 @@
-import com.janrain.{BusUpdateConfig, BackplaneProvisioning}
+import com.janrain.bp.v1.{BusUpdateConfig, BackplaneProvisioning}
 import concurrent.Await
 import scala.concurrent.duration._
 
-object BP {
+object BP1 {
 	import BackplaneProvisioning._
 	import concurrent.ExecutionContext.Implicits.global
 

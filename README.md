@@ -9,9 +9,9 @@ Requires: SBT 0.12.2
 
     git clone https://github.com/kender-janrain/bp-scala-api.git
     sbt console
-    import BP._
+    import BP1._
 
-see BP.scala for console interface
+see BP1.scala for console interface
 
 ### Examples ###
 
