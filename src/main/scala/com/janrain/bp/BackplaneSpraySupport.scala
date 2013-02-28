@@ -5,21 +5,24 @@ import spray.can.client.HttpClient
 import spray.client.HttpConduit
 import spray.io.IOExtension
 import spray.http.HttpResponse
-import com.janrain.bp.BackplaneSpraySupport._
-import spray.http.HttpResponse
 
-object BackplaneSpraySupport extends BackplaneConfig {
-	implicit val system = ActorSystem()
+object BackplaneSpraySupport {
+	implicit private val system = ActorSystem()
+	private val ioBridge = IOExtension(system).ioBridge()
+	private val httpClient = system.actorOf(Props(new HttpClient(ioBridge)))
+}
 
-	val ioBridge = IOExtension(system).ioBridge()
-	val httpClient = system.actorOf(Props(new HttpClient(ioBridge)))
-	val conduit = system.actorOf(
-		props = Props(new HttpConduit(httpClient, host, port)),
-		name = "http-conduit"
+trait BackplaneSpraySupport { self: BackplaneConfig =>
+	import BackplaneSpraySupport._
+
+	private val conduit = system.actorOf(
+		Props(new HttpConduit(httpClient, host, port))
 	)
 
+	def bpSendReceive = HttpConduit.sendReceive(conduit)
+
 	def debugResponse(response: HttpResponse): HttpResponse = {
-		if (debug) println(response.toString)
+		println(response.toString)
 		response
 	}
 }

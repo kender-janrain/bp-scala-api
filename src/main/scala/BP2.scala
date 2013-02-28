@@ -1,37 +1,43 @@
+import com.janrain.bp.LocalhostBackplaneConfig
+import com.janrain.bp.v2.Backplane2Provisioning
 import com.janrain.bp.v2.model.{BusUpdateRequestConfigV2, ClientUpdateRequestConfigV2}
-import concurrent.Await
+import concurrent.{Future, Await}
 import scala.concurrent.duration._
 
 object BP2 {
-	import com.janrain.bp.v2.Backplane2Provisioning._
-	val timeout = 5.seconds
+	object LocalBackplane2Provisioning extends Backplane2Provisioning with LocalhostBackplaneConfig
+	import LocalBackplane2Provisioning._
+
+	private def bpResult[T](f: Future[T]) = {
+		Await.result(f, 5.seconds)
+	}
 
 	object user {
-		def update(users: (String, String)*) = {
-			Await.result(userUpdate(users.toSet), timeout)
+		def update(users: (String, String)*) = bpResult {
+			userUpdate(users.toSet)
 		}
 
-		def list(users: String*) = {
-			Await.result(userList(users.toSet), timeout)
+		def list(users: String*) = bpResult {
+			userList(users.toSet)
 		}
 
-		def delete(users: String*) = {
-			Await.result(userDelete(users.toSet), timeout)
+		def delete(users: String*) = bpResult {
+			userDelete(users.toSet)
 		}
 	}
 
 	object client {
 		val config = clientConfig _
-		def update(configs: ClientUpdateRequestConfigV2*) = {
-			Await.result(clientUpdate(configs.toSet), timeout)
+		def update(configs: ClientUpdateRequestConfigV2*) = bpResult {
+			clientUpdate(configs.toSet)
 		}
 
-		def list(entities: String*) = {
-			Await.result(clientList(entities.toSet), timeout)
+		def list(entities: String*) = bpResult {
+			clientList(entities.toSet)
 		}
 
-		def delete(entities: String*) = {
-			Await.result(clientDelete(entities.toSet), timeout)
+		def delete(entities: String*) = bpResult {
+			clientDelete(entities.toSet)
 		}
 	}
 
@@ -39,31 +45,31 @@ object BP2 {
 		def config(busName: String, owner: String, retentionTimeSeconds: Int = 60, retentionStickyTimeSeconds: Int = 28800) = {
 			busConfig(busName, owner, retentionTimeSeconds, retentionStickyTimeSeconds)
 		}
-		def update(configs: BusUpdateRequestConfigV2*) = {
-			Await.result(busUpdate(configs.toSet), timeout)
+		def update(configs: BusUpdateRequestConfigV2*) = bpResult {
+			busUpdate(configs.toSet)
 		}
 
-		def list(entities: String*) = {
-			Await.result(busList(entities.toSet), timeout)
+		def list(entities: String*) = bpResult {
+			busList(entities.toSet)
 		}
 
-		def delete(entities: String*) = {
-			Await.result(busDelete(entities.toSet), timeout)
+		def delete(entities: String*) = bpResult {
+			busDelete(entities.toSet)
 		}
 	}
 
 	object grant {
-		def add(grants: (String, Set[String])*) = {
-			Await.result(grantAdd(grants.toMap), timeout)
+		def add(grants: (String, Set[String])*) = bpResult {
+			grantAdd(grants.toMap)
 		}
 
-		def revoke(grants: (String, Set[String])*) = {
-			Await.result(grantRevoke(grants.toMap), timeout)
+		def revoke(grants: (String, Set[String])*) = bpResult {
+			grantRevoke(grants.toMap)
 		}
 
-		def list(entities: String*) = {
+		def list(entities: String*) = bpResult {
 			assert(entities.length > 0, "must specify at least one client")
-			Await.result(grantList(entities.toSet), timeout)
+			grantList(entities.toSet)
 		}
 	}
 }
