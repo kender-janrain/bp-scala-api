@@ -9,11 +9,13 @@ Requires: SBT 0.12.2
 
     git clone https://github.com/kender-janrain/bp-scala-api.git
     sbt console
+
+### Provisioning Backplane 1 ###
+
+see BP1.scala for a list of operations
+
+    scala> import BP1._
     import BP1._
-
-see BP1.scala for console interface
-
-### Examples ###
 
     scala> user.list.map(_._1).mkString(", ")
     res1: String = kender1
@@ -30,7 +32,25 @@ see BP1.scala for console interface
     scala> bus.list()
     res5: Map[String,com.janrain.BusListResponse] = Map(test1 -> BusListResponse(test1,Map(kender1 -> Set(POST)),300,28800), test2 -> BusListResponse(test2,Map(kender1 -> Set(POST, GETALL)),300,28800))
 
+### Provisioning Backplane 2 ###
+
+Essentially works the same as backplane 1, but with backplane 2 versions of each operation
+
+see BP2.scala for a list of operations.
+
+    scala> import BP2._
+    import BP2._
+
+    scala> client.update(client.config("client1", "client1", "http://localhost/source", "http://localhost/redirect"))
+    res0: Map[String,String] = Map(client1 -> BACKPLANE_UPDATE_SUCCESS)
+
+    scala> bus.list()
+    res1: Map[String,com.janrain.bp.v2.model.BusListResponseConfigV2] = Map(b1 -> BusListResponseConfigV2(b1,kender2,60,28800))
+
+    scala> grant.add("client1" -> Set("b1"))
+    res2: Map[String,String] = Map(client1 -> GRANT_UPDATE_SUCCESS)
+
 ## To Do ##
 
-* A lot of polish
+* Implement publish and subscribing to messages
 * Configurablity!
