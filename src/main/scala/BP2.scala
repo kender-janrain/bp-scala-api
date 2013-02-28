@@ -51,4 +51,19 @@ object BP2 {
 			Await.result(busDelete(entities.toSet), timeout)
 		}
 	}
+
+	object grant {
+		def add(grants: (String, Set[String])*) = {
+			Await.result(grantAdd(grants.toMap), timeout)
+		}
+
+		def revoke(grants: (String, Set[String])*) = {
+			Await.result(grantRevoke(grants.toMap), timeout)
+		}
+
+		def list(entities: String*) = {
+			assert(entities.length > 0, "must specify at least one client")
+			Await.result(grantList(entities.toSet), timeout)
+		}
+	}
 }

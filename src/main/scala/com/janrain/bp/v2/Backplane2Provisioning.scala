@@ -80,4 +80,25 @@ object Backplane2Provisioning {
 			Post("/v2/provision/bus/delete", BusDeleteRequestV2(admin, secret, entities))
 		)
 	}
+
+	def grantAdd(grants: Map[String, Set[String]]) = {
+		import GrantAddJsonProtocolV2._
+		(sendReceive(conduit) ~> unmarshal[Map[String, String]]).apply(
+			Post("/v2/provision/grant/add", GrantAddRequestV2(admin, secret, grants))
+		)
+	}
+
+	def grantRevoke(grants: Map[String, Set[String]]) = {
+		import GrantRevokeJsonProtocol2._
+		(sendReceive(conduit) ~> unmarshal[Map[String, String]]).apply(
+			Post("/v2/provision/grant/revoke", GrantRevokeRequestV2(admin, secret, grants))
+		)
+	}
+
+	def grantList(entities: Set[String]) = {
+		import GrantListJsonProtocolV2._
+		(sendReceive(conduit) ~> unmarshal[Map[String, Map[String, String]]]).apply(
+			Post("/v2/provision/grant/list", GrantListRequestV2(admin, secret, entities))
+		)
+	}
 }
