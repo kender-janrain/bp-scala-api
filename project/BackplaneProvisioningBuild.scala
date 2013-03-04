@@ -5,10 +5,10 @@ object BackplaneProvisioningBuild extends Build {
   sbtVersion := "0.12.2"
 
   lazy val backplaneProvisioning = Project(
-    id = "backplane-provisioning",
+    id = "bp-scala-api",
     base = file("."),
     settings = Project.defaultSettings ++ Seq(
-      name := "Backplane Provisioning",
+      name := "bp-scala-api",
       organization := "com.janrain",
       version := "0.1-SNAPSHOT",
       scalaVersion := "2.10.0",

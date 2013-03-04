@@ -13,7 +13,7 @@ object BusListJsonProtocolV1 extends DefaultJsonProtocol {
 	implicit val BusListRequestFormat = jsonFormat3(BusListRequestV1)
 
 	implicit object BusListResponseFormatV1 extends RootJsonFormat[BusListResponseV1] {
-		def write(obj: BusListResponseV1): JsValue = JsObject()
+		def write(obj: BusListResponseV1): JsValue = sys.error("not implemented")
 
 		def read(json: JsValue): BusListResponseV1 = {
 			val jo = json.asJsObject

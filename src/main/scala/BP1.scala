@@ -1,3 +1,4 @@
+import akka.actor.ActorSystem
 import com.janrain.bp.LocalhostBackplaneConfig
 import com.janrain.bp.v1.model.BusUpdateConfigV1
 import com.janrain.bp.v1.{Backplane1Provisioning}
@@ -5,7 +6,9 @@ import concurrent.{Future, Await}
 import scala.concurrent.duration._
 
 object BP1 {
-	object LocalBackplane1Provisioning extends Backplane1Provisioning with LocalhostBackplaneConfig
+	object LocalBackplane1Provisioning extends Backplane1Provisioning with LocalhostBackplaneConfig {
+		val system = ActorSystem()
+	}
 	import LocalBackplane1Provisioning._
 	import concurrent.ExecutionContext.Implicits.global
 
